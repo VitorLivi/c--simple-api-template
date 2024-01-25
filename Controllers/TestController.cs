@@ -1,44 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleWebApp.Controllers
 {
-    [Route("api/[controller]")]
-    public class TestController : Controller
+    [ApiController]
+    public class TestController : ControllerBase
     {
-        // GET api/test
         [HttpGet]
+        [Route("json")]
         public IEnumerable<string> Get()
         {
             return new string[] { "Hello", "World" };
         }
 
-        // GET api/test/5
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("string/{id}")]
         public string Get(int id)
         {
-            return "Hello World";
+            return $"Hello World {id}";
         }
 
-        // POST api/test
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            Console.WriteLine(value);
         }
 
-        // PUT api/test/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public void Put([FromBody] string value)
         {
+            Console.WriteLine(value);
         }
 
-        // DELETE api/test/5
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            Console.WriteLine($"Delete {id}");
         }
     }
 }
