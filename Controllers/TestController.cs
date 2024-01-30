@@ -20,19 +20,22 @@ namespace SimpleWebApp.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public void Post([FromBody] string value)
         {
             Console.WriteLine(value);
         }
 
         [HttpPut]
+        [Route("")]
         public void Put([FromBody] string value)
         {
             Console.WriteLine(value);
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public void Delete(int id)
         {
             Console.WriteLine($"Delete {id}");
