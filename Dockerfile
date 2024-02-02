@@ -7,11 +7,12 @@ RUN dotnet restore
 # Build and publish a release
 RUN dotnet publish -c Release -o out
 
+# Install EF
+RUN dotnet tool install --global dotnet-ef
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 COPY --from=build-env /App/out .
-
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 ENTRYPOINT ["dotnet", "SimpleApi.dll"]

@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SimpleWebApp.Models
+namespace SimpleApi.Models
 {
+    [Table("user")]
     public class User
     {
         public int Id { get; set; }
@@ -9,9 +11,8 @@ namespace SimpleWebApp.Models
         [Required]
         public string Name { get; set; }
 
-        public User(int id, string name)
+        public User(string name)
         {
-            Id = id;
             Name = name;
         }
     }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace SimpleWebApp.Controllers
+namespace SimpleApi.Controllers
 {
     [ApiController]
     public class TestController : ControllerBase

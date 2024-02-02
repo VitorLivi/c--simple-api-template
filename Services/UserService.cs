@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using SimpleApi.Models;
+using SimpleApi.Repository;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleApi.Services
 {
@@ -15,9 +16,9 @@ namespace SimpleApi.Services
             _userRepository = userRepository;
         }
 
-        protected bool ValidateUser(User user)
+        protected bool ValidateName(string name)
         {
-            if (user.Name == null)
+            if (name == null || name.Trim().Length == 0)
             {
                 _modelState.AddModelError("Name", "Name is required.");
             }
@@ -27,24 +28,24 @@ namespace SimpleApi.Services
 
         public IEnumerable<User> ListUsers()
         {
-            return _userRepository.GetAll();
+            return this._userRepository.FindAll();
         }
 
-        public bool CreateUser(User user)
+        public bool CreateUser(string name)
         {
-            if (!ValidateUser(user))
+            if (!ValidateName(name))
             {
-                return false;
+                throw new BadHttpRequestException(new ValidationProblemDetails(_modelState).ToString(), StatusCodes.Status400BadRequest);
             }
 
-            _userRepository.Create(user);
+            this._userRepository.Insert(new User(name));
             return true;
         }
     }
 
     public interface IUserService
     {
-        bool CreateUser(User productToCreate);
+        bool CreateUser(string name);
         IEnumerable<User> ListUsers();
     }
 }
