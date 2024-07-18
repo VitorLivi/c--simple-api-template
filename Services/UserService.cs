@@ -35,7 +35,10 @@ namespace SimpleApi.Services
         {
             if (!ValidateName(name))
             {
-                throw new BadHttpRequestException(new ValidationProblemDetails(_modelState).ToString(), StatusCodes.Status400BadRequest);
+                System.Diagnostics.Debug.WriteLine("Invalid name");
+                var problemDetails = new ValidationProblemDetails(_modelState);
+                throw new BadHttpRequestException(problemDetails);
+
             }
 
             this._userRepository.Insert(new User(name));

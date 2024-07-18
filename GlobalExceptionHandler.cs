@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
@@ -16,7 +17,27 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             "An unhandled exception has occurred with traceId: {traceId}",
             traceId);
 
-        var (statusCode, title) = MapException(exception);
+        var statusCode = StatusCodes.Status500InternalServerError;
+        var title = "Internal Server Error";
+
+        System.Diagnostics.Debug.WriteLine(exception.Message);
+
+        if (exception is HttpRequestException httpException)
+        {
+
+            if (httpException.StatusCode != null)
+            {
+                statusCode = (int)httpException.StatusCode;
+            }
+
+            title = httpException.Message;
+        }
+        else
+        {
+            var map = MapException(exception);
+            statusCode = map.StatusCode;
+            title = map.Title;
+        }
 
         await Results.Problem(
             title: title,
